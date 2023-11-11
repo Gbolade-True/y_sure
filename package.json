@@ -5,8 +5,8 @@
   "scripts": {
     "postinstall": "tsc",
     "build": "tsc",
-    "serve": "ts-node ./dist/src/index.ts",
     "start": "yarn serve",
+    "serve": "ts-node ./src/index.ts",
     "watch": "nodemon index.ts",
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku master",
