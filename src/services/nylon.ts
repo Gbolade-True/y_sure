@@ -41,7 +41,7 @@ export const getNylonsServ = async (params: ReqParams<INylonFilter>) => {
     return new APIResponse(200, nylons)
   }  catch(err) {
     console.log('Error getting nylons:', err);
-    return new APIResponse(400, 'there seems to have been an error :(');
+    return new APIResponse(400, `there seems to have been an error :(, ${err}`);
   }
 }
 
