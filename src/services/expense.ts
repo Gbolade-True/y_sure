@@ -47,7 +47,7 @@ export const getExpensesServ = async (params: ReqParams<IExpenseFilter>) => {
         }
 
         const expenses = 
-            queryBuilder
+            await queryBuilder
                 .skip(skip)
                 .take(pageSize)
                 .getMany()

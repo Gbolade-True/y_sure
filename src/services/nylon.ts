@@ -33,10 +33,11 @@ export const getNylonsServ = async (params: ReqParams<INylonFilter>) => {
     }
 
     const nylons = 
-      queryBuilder
+      await queryBuilder
         .skip(skip)
         .take(pageSize)
         .getMany()
+    console.log(nylons, 'nylon success')
 
     return new APIResponse(200, nylons)
   }  catch(err) {

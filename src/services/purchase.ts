@@ -51,7 +51,7 @@ export const getPurchasesServ = async (params: ReqParams<IPurchaseFilter>) => {
         }
 
         const purchases = 
-            queryBuilder
+            await queryBuilder
                 .skip(skip)
                 .take(pageSize)
                 .getMany()

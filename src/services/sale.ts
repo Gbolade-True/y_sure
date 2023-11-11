@@ -59,7 +59,7 @@ export const getSalesServ = async (params: ReqParams<ISalesFilter>) => {
         }
 
         const sales = 
-            queryBuilder
+            await queryBuilder
                 .skip(skip)
                 .take(pageSize)
                 .getMany()
