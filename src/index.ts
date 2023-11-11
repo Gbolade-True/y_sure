@@ -1,9 +1,11 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-// import { User } from "./entity/User"
+import * as dotenv from 'dotenv';
 import { AppDataSource } from "./data-source"
 import routes from './routes';
+
+dotenv.config();
 
 // establish database connection
 AppDataSource
