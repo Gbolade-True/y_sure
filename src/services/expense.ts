@@ -2,8 +2,6 @@ import { AppDataSource } from "../data-source"
 import { ReqParams } from "../interfaces/ReqParams"
 import { IExpenseFilter } from "../interfaces/filter"
 import { APIResponse } from "../utils/api_response"
-import { updateNylonCountServ } from "./nylon"
-import { IPurchase } from "../interfaces/purchase"
 import { ExpenseEntity } from "../entities/ExpenseEntity"
 import { IExpense } from "../interfaces/expense"
 
@@ -54,9 +52,8 @@ export const getExpensesServ = async (params: ReqParams<IExpenseFilter>) => {
 
         return new APIResponse(200, expenses);
 
-    }  catch(err) {
-        console.log('Error getting espenses:', err);
-        return new APIResponse(400, 'there seems to have been an error :(');
+    }  catch(error) {
+        return new APIResponse(500, `Internal Server Error, ${error}`)
     }
 }
 
@@ -121,8 +118,7 @@ export const checkTotalExpenseInTimeFrameServ = async (params: ReqParams<IExpens
 
         return new APIResponse(200, { total: res.total, timeFrame });
     } catch (error) {
-        console.log('Error getting total expenses:', error);
-        return new APIResponse(400, 'there seems to have been an error :(');
+        return new APIResponse(500, `Internal Server Error, ${error}`)
     }
 }
 
@@ -142,7 +138,6 @@ export const updateExpenseServ = async (expense: IExpense) => {
 
         return new APIResponse(200, savedExpense);
       } catch (error) {
-        console.error('Error updating Expense:', error);
-        return new APIResponse(500, 'Internal Server Error')
+        return new APIResponse(500, `Internal Server Error, ${error}`)
       }
 }

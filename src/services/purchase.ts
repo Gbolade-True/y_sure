@@ -58,9 +58,8 @@ export const getPurchasesServ = async (params: ReqParams<IPurchaseFilter>) => {
 
         return new APIResponse(200, purchases);
 
-    }  catch(err) {
-        console.log('Error getting purchases:', err);
-        return new APIResponse(400, 'there seems to have been an error :(');
+    }  catch(error) {
+        return new APIResponse(500, `Internal Server Error, ${error}`)
     }
 }
 
@@ -128,8 +127,7 @@ export const checkTotalPurchaseInTimeFrameServ = async (params: ReqParams<IPurch
 
         return new APIResponse(200, { total: res.total, timeFrame });
     } catch (error) {
-        console.log('Error getting total purchases:', error);
-        return new APIResponse(400, 'there seems to have been an error :(');
+        return new APIResponse(500, `Internal Server Error, ${error}`)
     }
 }
 
@@ -149,7 +147,6 @@ export const updatePurchaseServ = async (purchase: IPurchase) => {
 
         return new APIResponse(200, savedPurchase);
       } catch (error) {
-        console.error('Error updating Purchase:', error);
-        return new APIResponse(500, 'Internal Server Error')
+        return new APIResponse(500, `Internal Server Error, ${error}`)
       }
 }

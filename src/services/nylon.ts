@@ -37,11 +37,9 @@ export const getNylonsServ = async (params: ReqParams<INylonFilter>) => {
         .skip(skip)
         .take(pageSize)
         .getMany()
-    console.log(nylons, 'nylon success')
 
-    return new APIResponse(200, nylons)
+    return new APIResponse(200, nylons);
   }  catch(err) {
-    console.log('Error getting nylons:', err);
     return new APIResponse(400, `there seems to have been an error :(, ${err}`);
   }
 }
@@ -75,8 +73,7 @@ export const updateNylonServ = async (nylon: INylon) => {
 
     return new APIResponse(200, savedNylon);
   } catch (error) {
-    console.error('Error updating Nylon:', error);
-    return new APIResponse(500, 'Internal Server Error')
+    return new APIResponse(500, `Internal Server Error, ${error}`)
   }
 }
 
@@ -100,8 +97,7 @@ export const updateNylonCountServ = async (id: string, quantity: number, type: '
 
   return new APIResponse(200, { message: 'Nylon quantity updated successfully', nylon: updatedNylon });
   } catch (error) {
-    console.error('Error updating Nylon:', error);
-    return new APIResponse(500, 'Internal Server Error')
+    return new APIResponse(500, `Internal Server Error, ${error}`)
   }
 }
 
@@ -117,7 +113,6 @@ export const deleteNylonServ = async (nylonId: string) => {
 
     return new APIResponse(200, 'Nylon deleted successfully');
   } catch (error) {
-    console.error('Error deleting Nylon:', error);
-    return new APIResponse(500, 'Internal Server Error')
+    return new APIResponse(500, `Internal Server Error, ${error}`)
   }
 };

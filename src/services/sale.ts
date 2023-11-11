@@ -67,8 +67,7 @@ export const getSalesServ = async (params: ReqParams<ISalesFilter>) => {
         return new APIResponse(200, sales);
 
     }  catch(err) {
-        console.log('Error getting sales:', err);
-        return new APIResponse(400, 'there seems to have been an error :(');
+        return new APIResponse(500, `Internal Server Error, ${err}`)
     }
 }
 
@@ -136,8 +135,7 @@ export const checkTotalSalesInTimeFrameServ = async (params: ReqParams<ISalesFil
 
         return new APIResponse(200, { total: res.total, timeFrame });
     } catch (error) {
-        console.log('Error getting total sales:', error);
-        return new APIResponse(400, 'there seems to have been an error :(');
+        return new APIResponse(500, `Internal Server Error, ${error}`)
     }
 }
 
@@ -157,7 +155,6 @@ export const updateSaleServ = async (sale: ISale) => {
 
         return new APIResponse(200, savedSale);
       } catch (error) {
-        console.error('Error updating Sale:', error);
-        return new APIResponse(500, 'Internal Server Error')
+        return new APIResponse(500, `Internal Server Error, ${error}`)
       }
 }
