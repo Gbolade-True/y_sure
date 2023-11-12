@@ -6,7 +6,7 @@
     "postinstall": "tsc",
     "build": "tsc",
     "start": "yarn serve",
-    "serve": "yarn typeorm migration:run -- -d 'src/data-source.ts' && ts-node ./src/index.ts",
+    "serve": "yarn typeorm migration:run -d 'src/data-source.ts' && ts-node ./src/index.ts",
     "watch": "nodemon ./src/index.ts",
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push heroku master",
