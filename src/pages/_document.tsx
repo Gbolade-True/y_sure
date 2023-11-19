@@ -14,6 +14,8 @@ class MyDocument extends Document {
     return (
       <Html lang={AppConfig.locale}>
         <Head>
+          <link rel="preload" type="text/css" href="../styles/global.css" />
+          <link rel="preload" type="text/css" href="antd/dist/reset.css" as="style" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={'use-credentials'} />
           <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet" />

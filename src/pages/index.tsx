@@ -4,7 +4,7 @@ import { Card, Flex, Typography, Calendar } from 'antd';
 
 const Index = () => {
   return (
-    <Main meta={<Meta title="Sparkles NFT" description="Sparkles NFT marketplace" />}>
+    <Main meta={<Meta title="Y_Sure" description="Y_Sure" />}>
       <main className="flex flex-col p-4 md:p-8">
         <div>
           <Flex gap="middle" wrap="wrap" className="my-8">
