@@ -1,11 +1,10 @@
 import type { NextApiRequest } from 'next';
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-export interface ReqQuery<TFilter> extends Partial<{ [key: string]: string | TFilter }> {
+// eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/naming-convention
+export interface ReqQuery<_> extends Partial<{ [key: string]: string }> {
   pageNumber?: string;
   pageSize?: string;
   filters?: string;
-  type?: TFilter;
 }
 
 export interface CustomRequest<TBody, TParams extends Partial<{ [key: string]: string }> = {}> extends NextApiRequest {
