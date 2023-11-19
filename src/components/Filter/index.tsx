@@ -27,7 +27,6 @@ interface FilterProps<F> {
 
 export const Filter = <F extends { [key: string]: any }>({ onFilterChange, filterFields }: FilterProps<F>) => {
   const [filters, setFilters] = useState<F>({} as F);
-  console.log(filters, 'sdcewcwe');
 
   const handleFilterChange = (name: keyof F, value: any) => {
     setFilters(prev => ({

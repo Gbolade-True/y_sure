@@ -11,6 +11,7 @@ const NylonForm = ({ nylonToEdit }: NylonFormProps) => {
   const [form] = Form.useForm<INylon>();
 
   const onFinish = (values: any) => {
+    // eslint-disable-next-line no-console
     console.log('Form Values:', values);
   };
 

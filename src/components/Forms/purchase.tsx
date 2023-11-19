@@ -15,6 +15,7 @@ const SaleForm = ({ purchaseToEdit }: PurchaseFormProps) => {
   const [form] = Form.useForm<IPurchase>();
 
   const onFinish = (values: any) => {
+    // eslint-disable-next-line no-console
     console.log('Form Values:', values);
   };
 
