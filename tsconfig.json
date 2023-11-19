@@ -1,21 +1,71 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "module": "esnext",
     "moduleResolution": "node",
-    "target": "es2019",
-    "sourceMap": true,
-    "outDir": "./lib/",
-    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnreachableCode": false,
+    "noFallthroughCasesInSwitch": true,
+    "target": "es5",
+    "outDir": "out",
+    "declaration": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": false,
     "skipLibCheck": true,
-    "baseUrl": "./",
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "preserve",
+    "noEmit": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "baseUrl": ".",
     "paths": {
-      "@app/*": ["./src/*"],
-      "@generated/*": ["./generated/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@modules/*": ["./src/modules/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "@/public/*": [
+        "./public/*"
+      ],
+      "*": [
+        "node_modules/@types/*",
+        "src/types/*"
+      ]
+    },
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "exclude": ["./node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "./out/**/*",
+    "./node_modules/**/*"
+  ]
 }

@@ -1,0 +1,5 @@
+node_modules
+out
+storybook-static
+src/api/swagger.ts
+.github
