@@ -6,9 +6,9 @@ export interface ISale {
   totalAmount: number;
   amountPaid: number;
   amountOwed: number;
-  createdAt: string;
+  createdAt: Date;
   comment?: string;
   customerName?: string;
   dateToBeDelivered?: string;
-  updatedAt?: string;
+  updatedAt?: Date;
 }

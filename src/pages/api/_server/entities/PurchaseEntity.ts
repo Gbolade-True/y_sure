@@ -14,7 +14,7 @@ export class PurchaseEntity extends BaseEntity {
   nylons!: INylon[];
 
   @Column('int')
-  totalAmount!: number;
+  totalCost!: number;
 
   @Column({ type: 'varchar', nullable: true })
   comment?: string;

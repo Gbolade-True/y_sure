@@ -59,11 +59,6 @@ const NylonView = () => {
       key: 'name',
     },
     {
-      title: 'Color',
-      dataIndex: 'color',
-      key: 'color',
-    },
-    {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
@@ -73,16 +68,6 @@ const NylonView = () => {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',
-    },
-    {
-      title: 'Height',
-      dataIndex: 'height',
-      key: 'height',
-    },
-    {
-      title: 'Width',
-      dataIndex: 'width',
-      key: 'width',
     },
     {
       title: 'Type',
@@ -112,11 +97,8 @@ const NylonView = () => {
     mockNylons?.map(n => ({
       key: n.id,
       name: n.name,
-      color: n.color,
       price: n.price,
       quantity: n.quantity,
-      height: n.height,
-      width: n.width,
       type: n.type,
       manufacturer: n.manufacturer,
     })) || [];
@@ -145,9 +127,9 @@ const NylonView = () => {
   return (
     <Main meta={<Meta title="Y-SURE" description="Nylon Manageement" />} className="p-2 md:p-4 lg:p-8">
       <div className="w-full">
-        <Typography className="text-xl flex gap-1">
+        <Typography className="text-xl flex gap-4 items-center">
           Nylon Management
-          <Button type="link" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
+          <Button type="primary" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
             Create
           </Button>
         </Typography>

@@ -1,11 +1,12 @@
+import { IPurchase } from '@/pages/api/_server/interfaces/purchase';
 import { mockNylons } from './nylon';
 
-export const mockPurchases = [
+export const mockPurchases: IPurchase[] = [
   {
     id: '1',
-    totalAmount: 2000,
+    totalCost: 2000,
     comment: 'No Comment',
-    datePurchased: '18/11/2023',
+    createdAt: new Date(1702731005926),
     nylons: mockNylons,
   },
 ];

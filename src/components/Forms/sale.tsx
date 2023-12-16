@@ -1,18 +1,19 @@
-import { ISale } from '@/pages/api/_server/interfaces/sale';
-import { Button, Divider, Form, Input, Select, Space } from 'antd';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { PlusOutlined } from '@ant-design/icons';
-import { useEffect } from 'react';
+import { PlusOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { ISale } from '@/pages/api/_server/interfaces/sale';
+import { AutoComplete, Button, Divider, Form, Input, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import { mockNylons } from '@/mocks/nylon';
 
 const { TextArea } = Input;
-
 interface SaleFormProps {
   saleToEdit?: ISale;
 }
 
 const SaleForm = ({ saleToEdit }: SaleFormProps) => {
+  const nylons = saleToEdit?.totalAmount ? saleToEdit?.nylons : mockNylons;
   const [form] = Form.useForm<ISale>();
+  const [filteredNylons, setFilteredNylons] = useState(nylons);
 
   const onFinish = (values: any) => {
     // eslint-disable-next-line no-console
@@ -47,6 +48,12 @@ const SaleForm = ({ saleToEdit }: SaleFormProps) => {
     return false;
   };
 
+  const handleSearch = (value: string) => {
+    if (!value) setFilteredNylons(nylons);
+    const filtered = nylons.filter(n => n.name.toLowerCase().includes(value.toLowerCase()));
+    setFilteredNylons(filtered);
+  };
+
   return (
     <Form form={form} layout="vertical" onFinish={onFinish} initialValues={saleToEdit || {}}>
       <Form.Item<ISale>
@@ -67,34 +74,34 @@ const SaleForm = ({ saleToEdit }: SaleFormProps) => {
           {fields => (
             <>
               {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} style={{ marginBottom: 8 }} align="baseline">
-                  <Space key={key} style={{ marginBottom: 8 }} align="center">
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'name']}
-                      rules={[{ required: true, message: 'Select a field' }]}
-                    >
-                      <Select placeholder="Select a field" className="h-10">
-                        {(saleToEdit?.amountPaid ? saleToEdit?.nylons : mockNylons)?.map(n => (
-                          <Select.Option key={n.id} value={n.name}>
-                            {n.name}
-                          </Select.Option>
-                        ))}
-                        {/* Add more options as needed */}
-                      </Select>
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'quantity']}
-                      rules={[{ required: true, message: 'Must be a number' }]}
-                    >
-                      <Input type="number" className="w-full h-10" />
-                    </Form.Item>
-                  </Space>
-                  <Button type="link" onClick={() => handleRemoveField(key)}>
-                    Remove
-                  </Button>
-                </Space>
+                <div key={key} className="mb-2 border border-solid border-gray-400 p-4 rounded-md relative">
+                  <Typography>{key + 1}</Typography>
+                  <CloseCircleOutlined
+                    className="absolute right-2 top-2 text-xl text-red-600 cursor-pointer"
+                    onClick={() => handleRemoveField(key)}
+                  />
+                  <Form.Item
+                    {...restField}
+                    name={[name, 'name']}
+                    rules={[{ required: true, message: 'Select a nylon' }]}
+                    label="Nylon"
+                  >
+                    <AutoComplete
+                      placeholder="Select a nylon"
+                      className="h-10 w-full"
+                      options={filteredNylons.map(f => ({ value: f.name }))}
+                      onSearch={handleSearch}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    {...restField}
+                    name={[name, 'quantity']}
+                    rules={[{ required: true, message: 'Must be a number' }]}
+                    label="Quantity"
+                  >
+                    <Input type="number" className="w-full h-10" />
+                  </Form.Item>
+                </div>
               ))}
               <Form.Item>
                 <Button

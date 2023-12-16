@@ -61,10 +61,22 @@ const SaleView = () => {
       key: 'nylonsSold',
     },
     {
+      title: 'Total Amount',
+      dataIndex: 'totalAmount',
+      key: 'totalAmount',
+      render: (_, sale) => `₦${sale.totalAmount}`,
+    },
+    {
       title: 'Amount Paid',
       dataIndex: 'amountPaid',
       key: 'amountPaid',
       render: (_, sale) => `₦${sale.amountPaid}`,
+    },
+    {
+      title: 'Amount Owed',
+      dataIndex: 'amountOwed',
+      key: 'amountOwed',
+      render: (_, sale) => `₦${sale.amountOwed}`,
     },
     {
       title: 'Comment',
@@ -91,10 +103,12 @@ const SaleView = () => {
     mockSales?.map(n => ({
       key: n.id,
       nylons: n.nylons,
-      nylonsSold: n.nylons?.length,
-      dateSold: n.dateSold,
-      comment: n.comment,
+      totalAmount: n.totalAmount,
       amountPaid: n.amountPaid,
+      amountOwed: n.amountOwed,
+      nylonsSold: n.nylons?.length,
+      dateSold: n.createdAt.toDateString(),
+      comment: n.comment,
     })) || [];
 
   const saleViews: TabsProps['items'] = [
@@ -130,9 +144,9 @@ const SaleView = () => {
   return (
     <Main meta={<Meta title="Y-SURE" description="Nylon Manageement" />} className="p-2 md:p-4 lg:p-8">
       <div className="w-full">
-        <Typography className="text-xl flex gap-1 align-middle">
+        <Typography className="text-xl flex gap-4 items-center">
           Sale Management
-          <Button type="link" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
+          <Button type="primary" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
             Create
           </Button>
         </Typography>

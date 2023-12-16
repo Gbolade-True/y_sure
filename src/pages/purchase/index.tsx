@@ -61,10 +61,10 @@ const PurchaseView = () => {
       key: 'nylonsBought',
     },
     {
-      title: 'Amount Paid',
-      dataIndex: 'totalAmount',
-      key: 'totalAmount',
-      render: (_, purchase) => `₦${purchase.totalAmount}`,
+      title: 'Total Cost',
+      dataIndex: 'totalCost',
+      key: 'totalCost',
+      render: (_, purchase) => `₦${purchase.totalCost}`,
     },
     {
       title: 'Comment',
@@ -91,10 +91,10 @@ const PurchaseView = () => {
     mockPurchases?.map(p => ({
       key: p.id,
       nylons: p.nylons,
+      totalCost: p.totalCost,
       nylonsBought: p.nylons?.length,
-      datePurchased: p.datePurchased,
+      datePurchased: p.createdAt?.toDateString(),
       comment: p.comment,
-      totalAmount: p.totalAmount,
     })) || [];
 
   const purchaseViews: TabsProps['items'] = [
@@ -129,9 +129,9 @@ const PurchaseView = () => {
   return (
     <Main meta={<Meta title="Y-SURE" description="Nylon Manageement" />} className="p-2 md:p-4 lg:p-8">
       <div className="w-full">
-        <Typography className="text-xl flex gap-1">
+        <Typography className="text-xl flex gap-4 items-center">
           Purchase Management
-          <Button type="link" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
+          <Button type="primary" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
             Create
           </Button>
         </Typography>

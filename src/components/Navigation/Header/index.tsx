@@ -1,4 +1,5 @@
 import { useThemeContext } from '@/contexts/Theme';
+import { useIsMobileMode } from '@/hooks/useWindowSize';
 import { Layout, Menu, Switch, Typography } from 'antd';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -8,6 +9,7 @@ const { Header } = Layout;
 export const AppHeader = () => {
   const { darkTheme, toggleDarkTheme } = useThemeContext();
   const pathname = usePathname();
+  const isMobile = useIsMobileMode();
 
   const menuItems = [
     { key: 'home', title: 'Home', link: '/' },
@@ -29,6 +31,7 @@ export const AppHeader = () => {
           label: <Link href={item.link}>{item.title}</Link>,
         }))}
         defaultSelectedKeys={[pathname || '']}
+        style={{ maxWidth: isMobile ? '200px' : '500px' }}
       />
       <Switch
         className="ml-4"

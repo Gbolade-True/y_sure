@@ -2,10 +2,10 @@ import { AppDataSource } from '../data-source';
 import { ReqQuery } from '../interfaces/ReqQuery';
 import { IPurchaseFilter } from '../interfaces/filter';
 import { APIResponse } from '../utils/api_response';
-import { updateNylonCountServ } from './nylon';
+import { mapNylonEntityToNylonDto, updateNylonCountServ } from './nylon';
 import { PurchaseEntity } from '../entities/PurchaseEntity';
-import { IPurchase } from '../interfaces/purchase';
 import { confirmInitiaization } from '../utils/constants';
+import { MakePurchaseDto, PurchaseDto, UpdatePurchaseDto } from '../dtos/purchase';
 
 export const getPurchasesServ = async (params: ReqQuery<IPurchaseFilter>) => {
   const { pageNumber = 1, pageSize = 25, filters } = params;
@@ -50,7 +50,8 @@ export const getPurchasesServ = async (params: ReqQuery<IPurchaseFilter>) => {
       }
     }
 
-    const purchases = await queryBuilder.skip(skip).take(Number(pageSize)).getMany();
+    const purchaseEntities = await queryBuilder.skip(skip).take(Number(pageSize)).getMany();
+    const purchases = purchaseEntities.map(mapPurchaseEntityToPurchaseDto);
 
     return new APIResponse(200, purchases);
   } catch (error) {
@@ -66,16 +67,16 @@ export const getPurchaseByIdServ = async (purchaseId: string) => {
     if (!purchase) {
       return new APIResponse(400, `Purchase doesn't Exist...`);
     }
-    return new APIResponse(200, purchase);
+    return new APIResponse(200, mapPurchaseEntityToPurchaseDto(purchase));
   } catch (error) {
     return new APIResponse(500, `Internal Server Error, ${error}`);
   }
 };
 
-export const makePurchaseServ = async (purchase: IPurchase) => {
+export const makePurchaseServ = async (purchaseDto: MakePurchaseDto) => {
   try {
     try {
-      const res = await updateNylonCountServ(purchase.nylons, 'purchase');
+      const res = await updateNylonCountServ(purchaseDto.nylons, 'purchase');
       if (res.status !== 200) {
         return new APIResponse(400, `Error updating nylon count while purchasing`);
       }
@@ -83,10 +84,12 @@ export const makePurchaseServ = async (purchase: IPurchase) => {
       return new APIResponse(500, `Internal Server Error, ${error}`);
     }
 
+    const purchaseEntity = mapPurchaseDtoToPurchaseEntity(purchaseDto);
+
     const savedPurchase = await (await confirmInitiaization(AppDataSource))
       .getRepository(PurchaseEntity)
-      .save(purchase);
-    return new APIResponse(200, savedPurchase);
+      .save(purchaseEntity);
+    return new APIResponse(200, mapPurchaseEntityToPurchaseDto(savedPurchase));
   } catch (error) {
     return new APIResponse(400, 'Error making purchase :(');
   }
@@ -142,20 +145,24 @@ export const checkTotalPurchaseInTimeFrameServ = async (query: ReqQuery<IPurchas
   }
 };
 
-export const updatePurchaseServ = async (purchase: IPurchase) => {
-  if (!purchase.id) return new APIResponse(404, 'No Id Provided');
+export const updatePurchaseServ = async (purchaseDto: PurchaseDto) => {
+  if (!purchaseDto.id) return new APIResponse(404, 'No Id Provided');
   try {
     const existingPurchase = await (await confirmInitiaization(AppDataSource)).getRepository(PurchaseEntity).findOneBy({
-      id: purchase.id,
+      id: purchaseDto.id,
     });
 
     if (!existingPurchase) {
       return new APIResponse(400, 'there seems to have been an error :(');
     }
 
+    const purchaseEntity = mapPurchaseDtoToPurchaseEntity(purchaseDto);
+    purchaseEntity.updatedAt = new Date();
+
     // Remove what was purchased prior
+    const existingNylonDtos = existingPurchase.nylons.map(mapNylonEntityToNylonDto);
     try {
-      const res = await updateNylonCountServ(existingPurchase.nylons, 'sale');
+      const res = await updateNylonCountServ(existingNylonDtos, 'sale');
       if (res.status !== 200) {
         return new APIResponse(400, `Error updating nylon count while r_updating purchase`);
       }
@@ -165,11 +172,12 @@ export const updatePurchaseServ = async (purchase: IPurchase) => {
 
     const updatedPurchase = (await confirmInitiaization(AppDataSource))
       .getRepository(PurchaseEntity)
-      .merge(existingPurchase, purchase);
+      .merge(existingPurchase, purchaseEntity);
 
     // Add new items purchased now
+    const updatedPurchaseDtos = updatedPurchase.nylons.map(mapNylonEntityToNylonDto);
     try {
-      const res = await updateNylonCountServ(existingPurchase.nylons, 'purchase');
+      const res = await updateNylonCountServ(updatedPurchaseDtos, 'purchase');
       if (res.status !== 200) {
         return new APIResponse(400, `Error updating nylon count while m_updating purchase`);
       }
@@ -181,8 +189,32 @@ export const updatePurchaseServ = async (purchase: IPurchase) => {
       .getRepository(PurchaseEntity)
       .save(updatedPurchase);
 
-    return new APIResponse(200, savedPurchase);
+    return new APIResponse(200, mapPurchaseDtoToPurchaseEntity(savedPurchase));
   } catch (error) {
     return new APIResponse(500, `Internal Server Error, ${error}`);
   }
+};
+
+const mapPurchaseDtoToPurchaseEntity = (dto: MakePurchaseDto | UpdatePurchaseDto): PurchaseEntity => {
+  const sale = new PurchaseEntity();
+
+  sale.nylons = dto.nylons;
+  sale.totalCost = dto.totalCost;
+  sale.comment = dto.comment;
+
+  if ('id' in dto) sale.id = dto.id;
+
+  return sale;
+};
+
+const mapPurchaseEntityToPurchaseDto = (sale: PurchaseEntity): PurchaseDto => {
+  const dto: PurchaseDto = {
+    id: sale.id,
+    nylons: sale.nylons,
+    totalCost: sale.totalCost,
+    comment: sale.comment,
+    createdAt: sale.createdAt,
+  };
+
+  return dto;
 };

@@ -10,23 +10,14 @@ export class NylonEntity extends BaseEntity {
   @Column('text')
   name!: string;
 
-  @Column('text')
-  color!: string;
-
   @Column('int')
   quantity!: number;
 
   @Column('int')
   price!: number;
 
-  @Column({ type: 'enum', enum: NylonTypeEnum, nullable: true })
+  @Column({ type: 'enum', enum: NylonTypeEnum, nullable: true, default: NylonTypeEnum.STANDARD })
   type?: NylonType;
-
-  @Column({ type: 'int', nullable: true })
-  height?: number;
-
-  @Column({ type: 'int', nullable: true })
-  width?: number;
 
   @Column({ type: 'varchar', nullable: true })
   manufacturer?: string;
