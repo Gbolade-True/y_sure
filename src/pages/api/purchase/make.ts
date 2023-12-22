@@ -2,7 +2,12 @@ import type { NextApiResponse } from 'next';
 import { CustomRequest } from '../_server/interfaces/ReqQuery';
 import { makePurchaseServ } from '../_server/services/purchase';
 import { IPurchase } from '../_server/interfaces/purchase';
+import { ySureAPIGuard } from '../_server/auth';
 
 export default async function handler(req: CustomRequest<IPurchase>, res: NextApiResponse) {
-  makePurchaseServ(req.body).then(resp => res.status(resp.status).json(resp.data));
+  ySureAPIGuard(req, res).then(allow => {
+    if (allow) {
+      makePurchaseServ(req.body).then(resp => res.status(resp.status).json(resp.data));
+    }
+  });
 }

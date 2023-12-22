@@ -2,7 +2,12 @@ import type { NextApiResponse } from 'next';
 import { CustomRequest, ReqQuery } from '../_server/interfaces/ReqQuery';
 import { getExpensesServ } from '../_server/services/expense';
 import { IExpenseFilter } from '../_server/interfaces/filter';
+import { ySureAPIGuard } from '../_server/auth';
 
 export default async function handler(req: CustomRequest<any, ReqQuery<IExpenseFilter>>, res: NextApiResponse) {
-  getExpensesServ(req.query).then(resp => res.status(resp.status).json(resp.data));
+  ySureAPIGuard(req, res).then(allow => {
+    if (allow) {
+      getExpensesServ(req.query).then(resp => res.status(resp.status).json(resp.data));
+    }
+  });
 }
