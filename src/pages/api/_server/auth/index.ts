@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export const ySureAPIGuard = async (req: NextApiRequest, res: NextApiResponse): Promise<boolean> => {
-  const allowedIPs = process.env.ALLOWED_IPS?.split(',') as string[];
+  const allowedIPs = process.env.ALLOWED_IPS ? process.env.ALLOWED_IPS.split(',') : [];
   const clientIP = req.socket.remoteAddress || '';
 
   if (!allowedIPs.includes(clientIP)) {
