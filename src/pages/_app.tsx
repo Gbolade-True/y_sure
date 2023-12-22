@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
 import ThemeProvider from '@/contexts/Theme';
 import '../styles/global.css';
 import 'antd/dist/reset.css';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import LoadingPage from '@/components/Loading';
+import { AuthProvider } from '@/contexts/Auth';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -25,7 +26,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     };
   }, [router]);
 
-  return <ThemeProvider>{loading ? <LoadingPage /> : <Component {...pageProps} />}</ThemeProvider>;
+  return (
+    <ThemeProvider>
+      <AuthProvider>{loading ? <LoadingPage /> : <Component {...pageProps} />}</AuthProvider>
+    </ThemeProvider>
+  );
 };
 
 export default MyApp;
