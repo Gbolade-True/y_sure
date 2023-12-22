@@ -1,6 +1,5 @@
 import { NylonType } from '../enums/NylonTypeEnum';
-
-export type TimeFrameType = 'day' | 'week' | 'month' | 'year';
+import { TimeFrameType } from '../enums/TimeFrameEnum';
 
 export interface ISaleFilter {
   nylons?: string[];

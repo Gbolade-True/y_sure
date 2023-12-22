@@ -1,7 +1,7 @@
+import Link from 'next/link';
 import { useThemeContext } from '@/contexts/Theme';
 import { useIsMobileMode } from '@/hooks/useWindowSize';
 import { Layout, Menu, Switch, Typography } from 'antd';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const { Header } = Layout;
@@ -13,15 +13,15 @@ export const AppHeader = () => {
 
   const menuItems = [
     { key: 'home', title: 'Home', link: '/' },
-    { key: 'nylon', title: 'Nylons', link: '/nylon' },
     { key: 'sale', title: 'Sales', link: '/sale' },
     { key: 'purchase', title: 'Purchases', link: '/purchase' },
+    { key: 'nylon', title: 'Nylons', link: '/nylon' },
   ];
 
   return (
     <Header className="sticky top-0 z-10 w-full flex items-center p-4 md:p-8">
       <Typography className="text-xl cursor-pointer whitespace-nowrap mr-4">
-        <Link href="/">Y_SURE</Link>
+        <Link href="/">Y-SURE</Link>
       </Typography>
       <Menu
         mode="horizontal"

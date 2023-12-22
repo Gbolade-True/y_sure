@@ -1,20 +1,21 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Alert, Button, Drawer, Flex, Space, Tabs, TabsProps, Tag, Typography } from 'antd';
+import { useState } from 'react';
+import useSWR from 'swr';
+import { Alert, Button, Drawer, Flex, Popconfirm, Space, Tabs, TabsProps, Tag, Typography } from 'antd';
 import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { Main } from '@/templates/Main';
 import { Meta } from '@/layout/Meta';
-import { useState } from 'react';
-import { ISale } from '../api/_server/interfaces/sale';
 import { ColumnsType } from 'antd/es/table';
 import SaleForm from '@/components/Forms/sale';
 import { YTable } from '@/components/Table';
 import { INylon } from '../api/_server/interfaces/nylon';
 import { Filter, FilterField, IBaseFilters } from '@/components/Filter';
-import useSWR from 'swr';
 import { mockNylons } from '@/mocks/nylon';
 import { mockSales } from '@/mocks/sale';
-import { ISaleFilter, TimeFrameType } from '../api/_server/interfaces/filter';
+import { ISaleFilter } from '../api/_server/interfaces/filter';
 import { ClientResponse } from '../api/_server/utils/constants';
+import { SaleDto } from '../api/_server/dtos/sale';
+import { TimeFrameType } from '../api/_server/enums/TimeFrameEnum';
 
 interface ISalesFilters extends IBaseFilters {
   nylons?: INylon[];
@@ -23,12 +24,12 @@ interface ISalesFilters extends IBaseFilters {
 
 const SaleView = () => {
   const canFetch = false;
-  const [show, setShow] = useState<{ show: boolean; sale?: ISale }>({ show: false });
+  const [show, setShow] = useState<{ show: boolean; sale?: SaleDto }>({ show: false });
   const [filters, setFilters] = useState<ISalesFilters>();
   const [pageNumber, setPageNumber] = useState(1);
 
   const fetcher = (url: string) => fetch(url).then(res => res.json());
-  const { isLoading, error } = useSWR<ClientResponse<ISale[]>>(
+  const { isLoading, error } = useSWR<ClientResponse<SaleDto[]>>(
     canFetch
       ? `/api/sale?pageNumber=${pageNumber}&pageSize=25&filters=${JSON.stringify({
           nylons: filters?.nylons,
@@ -93,7 +94,14 @@ const SaleView = () => {
       key: 'action',
       render: (_, sale) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} onClick={() => setShow({ show: true, sale })} />
+          <Popconfirm
+            title="Sure to edit?"
+            okText="Edit"
+            onConfirm={() => setShow({ show: true, sale })}
+            okButtonProps={{ type: 'dashed' }}
+          >
+            <Button icon={<EditOutlined />} />
+          </Popconfirm>
         </Space>
       ),
     },
@@ -145,15 +153,15 @@ const SaleView = () => {
     <Main meta={<Meta title="Y-SURE" description="Nylon Manageement" />} className="p-2 md:p-4 lg:p-8">
       <div className="w-full">
         <Typography className="text-xl flex gap-4 items-center">
-          Sale Management
+          Sales
           <Button type="primary" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
-            Create
+            Register
           </Button>
         </Typography>
         <Tabs defaultActiveKey="1" items={saleViews} />
 
         <Drawer
-          title={show?.sale ? 'Edit Sale' : 'Create Sale'}
+          title={show?.sale ? 'Edit Sale' : 'Register Sale'}
           placement="right"
           onClose={() => setShow({ show: false, sale: undefined })}
           open={show.show}

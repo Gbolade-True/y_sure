@@ -3,6 +3,8 @@
 // psql -U postgres
 // 0467388e-8f46-463f-b7dd-8eeac9849b2a
 // ts-node ./src/pages/api/_server/data-source.ts &&
+// "target": "ES2015",
+// "module": "CommonJS",
 
 import { DataSource } from 'typeorm';
 import { AppDataSource } from '../data-source';

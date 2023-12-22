@@ -110,13 +110,13 @@ export const checkTotalPurchaseInTimeFrameServ = async (query: ReqQuery<IPurchas
 
     if (timeFrame === 'day') {
       res = await queryBuilder
-        .select('SUM(purchase.totalAmount)', 'total')
+        .select('SUM(purchase.totalCost)', 'total')
         .andWhere(`DATE(sale.createdAt)::date = DATE(:currentDate)::date`, { currentDate })
         .getRawOne();
     }
     if (timeFrame === 'week') {
       res = await queryBuilder
-        .select('SUM(purchase.totalAmount)', 'total')
+        .select('SUM(purchase.totalCost)', 'total')
         .andWhere(`purchase.createdAt >= :weekAgo`, {
           weekAgo: new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000),
         })
@@ -124,7 +124,7 @@ export const checkTotalPurchaseInTimeFrameServ = async (query: ReqQuery<IPurchas
     }
     if (timeFrame === 'month') {
       res = await queryBuilder
-        .select('SUM(purchase.totalAmount)', 'total')
+        .select('SUM(purchase.totalCost)', 'total')
         .andWhere(`purchase.createdAt >= :monthAgo`, {
           monthAgo: new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000),
         })
@@ -132,14 +132,14 @@ export const checkTotalPurchaseInTimeFrameServ = async (query: ReqQuery<IPurchas
     }
     if (timeFrame === 'year') {
       res = await queryBuilder
-        .select('SUM(purchase.totalAmount)', 'total')
+        .select('SUM(purchase.totalCost)', 'total')
         .andWhere(`purchase.createdAt >= :yearAgo`, {
           yearAgo: new Date(currentDate.getTime() - 365 * 24 * 60 * 60 * 1000),
         })
         .getRawOne();
     }
 
-    return new APIResponse(200, { total: res.total, timeFrame });
+    return new APIResponse(200, { total: res.total || 0, timeFrame });
   } catch (error) {
     return new APIResponse(500, `Internal Server Error, ${error}`);
   }

@@ -19,7 +19,7 @@ type Props = {
 const themeLocalStorageName = 'y_sure_theme';
 
 const ThemeProvider = ({ children }: Props) => {
-  const [darkTheme, setDarkTheme] = useState<boolean | undefined>(true);
+  const [darkTheme, setDarkTheme] = useState<boolean | undefined>(false);
 
   const toggleDarkTheme = () => {
     localStorage.setItem(themeLocalStorageName, !darkTheme ? 'dark' : 'light');

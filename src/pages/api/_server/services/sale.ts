@@ -105,7 +105,7 @@ export const checkTotalSalesInTimeFrameServ = async (params: ReqQuery<ISaleFilte
   const parsedFilters = params.filters ? (JSON.parse(params.filters) as ISaleFilter) : null;
   const timeFrame = parsedFilters?.timeFrame;
 
-  if (!timeFrame) return new APIResponse(400, 'there seems to have been an error :(');
+  if (!timeFrame) return new APIResponse(400, 'No timeframe passed :(');
 
   try {
     let res: any = {};
@@ -143,7 +143,7 @@ export const checkTotalSalesInTimeFrameServ = async (params: ReqQuery<ISaleFilte
         .getRawOne();
     }
 
-    return new APIResponse(200, { total: res.total, timeFrame });
+    return new APIResponse(200, { total: res.total || 0, timeFrame });
   } catch (error) {
     return new APIResponse(500, `Internal Server Error, ${error}`);
   }

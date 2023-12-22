@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Alert, Button, Drawer, Flex, Space, Tabs, TabsProps, Tag, Typography } from 'antd';
+import { Alert, Button, Drawer, Flex, Popconfirm, Space, Tabs, TabsProps, Tag, Typography } from 'antd';
 import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { Main } from '@/templates/Main';
 import { Meta } from '@/layout/Meta';
@@ -11,10 +11,11 @@ import { INylon } from '../api/_server/interfaces/nylon';
 import { IPurchase } from '../api/_server/interfaces/purchase';
 import { mockPurchases } from '@/mocks/purchase';
 import { Filter, FilterField, IBaseFilters } from '@/components/Filter';
-import { IPurchaseFilter, TimeFrameType } from '../api/_server/interfaces/filter';
+import { IPurchaseFilter } from '../api/_server/interfaces/filter';
 import useSWR from 'swr';
 import { mockNylons } from '@/mocks/nylon';
 import { ClientResponse } from '../api/_server/utils/constants';
+import { TimeFrameType } from '../api/_server/enums/TimeFrameEnum';
 
 interface IPurchaseFilters extends IBaseFilters {
   nylons?: INylon[];
@@ -81,7 +82,14 @@ const PurchaseView = () => {
       key: 'action',
       render: (_, purchase) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} onClick={() => setShow({ show: true, purchase })} />
+          <Popconfirm
+            title="Sure to edit?"
+            okText="Edit"
+            onConfirm={() => setShow({ show: true, purchase })}
+            okButtonProps={{ type: 'dashed' }}
+          >
+            <Button icon={<EditOutlined />} />
+          </Popconfirm>
         </Space>
       ),
     },
@@ -130,7 +138,7 @@ const PurchaseView = () => {
     <Main meta={<Meta title="Y-SURE" description="Nylon Manageement" />} className="p-2 md:p-4 lg:p-8">
       <div className="w-full">
         <Typography className="text-xl flex gap-4 items-center">
-          Purchase Management
+          Purchases
           <Button type="primary" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
             Create
           </Button>

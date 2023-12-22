@@ -16,7 +16,7 @@ export class NylonEntity extends BaseEntity {
   @Column('int')
   price!: number;
 
-  @Column({ type: 'enum', enum: NylonTypeEnum, nullable: true, default: NylonTypeEnum.STANDARD })
+  @Column({ type: 'enum', enum: NylonTypeEnum, default: NylonTypeEnum.STANDARD })
   type?: NylonType;
 
   @Column({ type: 'varchar', nullable: true })

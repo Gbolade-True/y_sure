@@ -1,3 +1,4 @@
+import { TimeFrameType } from '../enums/TimeFrameEnum';
 import { INylon } from '../interfaces/nylon';
 import { ISale } from '../interfaces/sale';
 
@@ -13,4 +14,9 @@ export interface MakeSaleDto {
 
 export interface UpdateSaleDto extends MakeSaleDto {
   id: string;
+}
+
+export interface CheckSalesTotalDto {
+  total: number;
+  timeframe: TimeFrameType;
 }

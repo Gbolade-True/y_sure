@@ -130,7 +130,7 @@ const SaleForm = ({ saleToEdit }: SaleFormProps) => {
 
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          {saleToEdit ? 'Edit' : 'Create'}
+          {saleToEdit ? 'Edit' : 'Register'}
         </Button>
       </Form.Item>
     </Form>

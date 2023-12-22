@@ -1,4 +1,5 @@
-import { INylon } from '@/pages/api/_server/interfaces/nylon';
+import { NylonTypeEnum } from '../pages/api/_server/enums/NylonTypeEnum';
+import { INylon } from '../pages/api/_server/interfaces/nylon';
 
 export const mockNylons: INylon[] = [
   {
@@ -6,7 +7,7 @@ export const mockNylons: INylon[] = [
     name: 'SS1-black',
     quantity: 500,
     price: 1500,
-    type: 'standard',
+    type: NylonTypeEnum.STANDARD,
     manufacturer: 'M1',
   },
   {
@@ -14,7 +15,7 @@ export const mockNylons: INylon[] = [
     name: 'SS2-white',
     quantity: 400,
     price: 200,
-    type: 'standard',
+    type: NylonTypeEnum.STANDARD,
     manufacturer: '_',
   },
   {
@@ -22,7 +23,7 @@ export const mockNylons: INylon[] = [
     name: 'SS3-grey',
     quantity: 400,
     price: 200,
-    type: 'standard',
+    type: NylonTypeEnum.STANDARD,
     manufacturer: '_',
   },
   {
@@ -30,7 +31,7 @@ export const mockNylons: INylon[] = [
     name: 'Ghana_Must_Go',
     quantity: 400,
     price: 200,
-    type: 'ghana_must_go',
+    type: NylonTypeEnum.GHANA_MUST_GO,
     manufacturer: '_',
   },
   {
@@ -38,7 +39,7 @@ export const mockNylons: INylon[] = [
     name: 'Ziplock_1',
     quantity: 400,
     price: 200,
-    type: 'ziplock',
+    type: NylonTypeEnum.ZIPLOCK,
     manufacturer: '_',
   },
 ];

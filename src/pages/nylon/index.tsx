@@ -84,8 +84,20 @@ const NylonView = () => {
       key: 'action',
       render: (_, nylon) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} onClick={() => setShow({ show: true, nylon })} />
-          <Popconfirm title="Sure to delete?" onConfirm={() => {}} okButtonProps={{ type: 'dashed', danger: true }}>
+          <Popconfirm
+            title="Sure to edit?"
+            okText="Edit"
+            onConfirm={() => setShow({ show: true, nylon })}
+            okButtonProps={{ type: 'dashed' }}
+          >
+            <Button icon={<EditOutlined />} />
+          </Popconfirm>
+          <Popconfirm
+            title="Sure to delete?"
+            okText="Delete"
+            onConfirm={() => {}}
+            okButtonProps={{ type: 'dashed', danger: true }}
+          >
             <Button danger icon={<DeleteOutlined />} />
           </Popconfirm>
         </Space>
@@ -128,7 +140,7 @@ const NylonView = () => {
     <Main meta={<Meta title="Y-SURE" description="Nylon Manageement" />} className="p-2 md:p-4 lg:p-8">
       <div className="w-full">
         <Typography className="text-xl flex gap-4 items-center">
-          Nylon Management
+          Nylon Inventory
           <Button type="primary" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
             Create
           </Button>
