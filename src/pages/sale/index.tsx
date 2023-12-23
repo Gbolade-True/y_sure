@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import useSWR from 'swr';
 import { Alert, Button, Drawer, Flex, Popconfirm, Space, Tabs, TabsProps, Tag, Typography } from 'antd';
-import { PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Main } from '@/templates/Main';
 import { Meta } from '@/layout/Meta';
-import { ColumnsType } from 'antd/es/table';
+import type { ColumnsType } from 'antd/es/table';
 import SaleForm from '@/components/Forms/sale';
-import { YTable } from '@/components/Table';
+import { TableData, YTable } from '@/components/Table';
 import { INylon } from '../api/_server/interfaces/nylon';
 import { Filter, FilterField, IBaseFilters } from '@/components/Filter';
 import { mockNylons } from '@/mocks/nylon';
@@ -16,6 +16,18 @@ import { ISaleFilter } from '../api/_server/interfaces/filter';
 import { ClientResponse } from '../api/_server/utils/constants';
 import { SaleDto } from '../api/_server/dtos/sale';
 import { TimeFrameType } from '../api/_server/enums/TimeFrameEnum';
+import { SaleDetails } from '@/components/Details/sale';
+
+export interface ISaleRow extends TableData {
+  key: string;
+  amountOwed: number;
+  amountPaid: number;
+  comment: string;
+  dateSold: string;
+  nylons: INylon[];
+  nylonsSold: number;
+  totalAmount: number;
+}
 
 interface ISalesFilters extends IBaseFilters {
   nylons?: INylon[];
@@ -24,7 +36,8 @@ interface ISalesFilters extends IBaseFilters {
 
 const SaleView = () => {
   const canFetch = false;
-  const [show, setShow] = useState<{ show: boolean; sale?: SaleDto }>({ show: false });
+  const [showForm, setShowForm] = useState<{ show: boolean; sale?: ISaleRow }>({ show: false });
+  const [showDetails, setShowDetails] = useState<{ show: boolean; sale: ISaleRow | null }>({ show: false, sale: null });
   const [filters, setFilters] = useState<ISalesFilters>();
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -55,7 +68,7 @@ const SaleView = () => {
     },
   ];
 
-  const columns: ColumnsType<any> = [
+  const columns: ColumnsType<ISaleRow> = [
     {
       title: 'Nylon Types sold',
       dataIndex: 'nylonsSold',
@@ -97,17 +110,18 @@ const SaleView = () => {
           <Popconfirm
             title="Sure to edit?"
             okText="Edit"
-            onConfirm={() => setShow({ show: true, sale })}
+            onConfirm={() => setShowForm({ show: true, sale })}
             okButtonProps={{ type: 'dashed' }}
           >
             <Button icon={<EditOutlined />} />
           </Popconfirm>
+          <EyeOutlined onClick={() => setShowDetails({ show: true, sale })} />
         </Space>
       ),
     },
   ];
 
-  const data =
+  const data: ISaleRow[] =
     mockSales?.map(n => ({
       key: n.id,
       nylons: n.nylons,
@@ -116,7 +130,7 @@ const SaleView = () => {
       amountOwed: n.amountOwed,
       nylonsSold: n.nylons?.length,
       dateSold: n.createdAt.toDateString(),
-      comment: n.comment,
+      comment: n.comment || '',
     })) || [];
 
   const saleViews: TabsProps['items'] = [
@@ -128,7 +142,7 @@ const SaleView = () => {
       ) : (
         <Space direction="vertical" className="w-full">
           <Filter<ISalesFilters> filterFields={filterFields} onFilterChange={_filters => setFilters(_filters)} />
-          <YTable
+          <YTable<ISaleRow>
             data={data}
             columns={columns}
             total={2}
@@ -154,19 +168,28 @@ const SaleView = () => {
       <div className="w-full">
         <Typography className="text-xl flex gap-4 items-center">
           Sales
-          <Button type="primary" onClick={() => setShow({ show: true })} icon={<PlusOutlined />}>
+          <Button type="primary" onClick={() => setShowForm({ show: true })} icon={<PlusOutlined />}>
             Register
           </Button>
         </Typography>
         <Tabs defaultActiveKey="1" items={saleViews} />
 
         <Drawer
-          title={show?.sale ? 'Edit Sale' : 'Register Sale'}
+          title={showForm?.sale ? 'Edit Sale' : 'Register Sale'}
           placement="right"
-          onClose={() => setShow({ show: false, sale: undefined })}
-          open={show.show}
+          onClose={() => setShowForm({ show: false, sale: undefined })}
+          open={showForm.show}
         >
-          <SaleForm saleToEdit={show.sale} />
+          <SaleForm saleToEdit={showForm.sale} />
+        </Drawer>
+
+        <Drawer
+          title="Sale Details"
+          placement="right"
+          onClose={() => setShowDetails({ show: false, sale: null })}
+          open={showDetails.show}
+        >
+          <SaleDetails sale={showDetails.sale} />
         </Drawer>
       </div>
     </Main>

@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
+export type ColorMode = 'light' | 'dark';
+
 export const ThemeContext = createContext<{
   darkTheme?: boolean;
   setDarkTheme: (val: boolean) => void;

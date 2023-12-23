@@ -4,10 +4,11 @@ import { ISale } from '@/pages/api/_server/interfaces/sale';
 import { AutoComplete, Button, Divider, Form, Input, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { mockNylons } from '@/mocks/nylon';
+import { ISaleRow } from '@/pages/sale';
 
 const { TextArea } = Input;
 interface SaleFormProps {
-  saleToEdit?: ISale;
+  saleToEdit?: ISaleRow;
 }
 
 const SaleForm = ({ saleToEdit }: SaleFormProps) => {

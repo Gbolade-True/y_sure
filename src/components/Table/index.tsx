@@ -13,17 +13,17 @@ export type TableData = {
   [key: string]: any;
 };
 
-interface TableProps {
-  data: TableData[];
+interface TableProps<T extends TableData> {
+  data: T[];
   onPaginationChange: (page: number, pageSize: number) => void;
   total: number;
   pageSize?: number;
   loading?: boolean;
-  columns: ColumnsType<TableData>;
-  expandable?: ExpandableConfig<TableData>;
+  columns: ColumnsType<T>;
+  expandable?: ExpandableConfig<T>;
 }
 
-export const YTable = ({
+export const YTable = <T extends TableData>({
   columns,
   data,
   loading,
@@ -31,7 +31,7 @@ export const YTable = ({
   total,
   pageSize = 25,
   expandable,
-}: TableProps) => (
+}: TableProps<T>) => (
   <Table
     columns={columns}
     dataSource={data}
